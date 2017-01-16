@@ -1,0 +1,14 @@
+[package]
+name = "sandpile"
+version = "0.1.0"
+description = "Library to do sandpile computations"
+readme = "README.md"
+repository = "https://github.com/chinmaydd/sandpile"
+license = "MIT"
+authors = ["chinmaydd <chinmay1dd@gmail.com>"]
+
+[lib]
+name = "sandpile"
+path = "src/lib.rs"
+
+[dependencies]
