@@ -2,7 +2,7 @@
 
 Sandpile implementation in Rust. WIP.
 
-### Example
+### Usage Example
 
 ```rust
 extern crate sandpile;
@@ -23,8 +23,14 @@ fn main() {
     // We have overloaded the '+' operator for sandpiles.
     let c = a + b;
 
-    println!("{:?}", c);
+    println!("{}", c);
 }
+/*
+Output: 
+1 | 2 | 3 | 
+1 | 2 | 3 | 
+1 | 2 | 3 | 
+*/
 ```
 
 ### License

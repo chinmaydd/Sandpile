@@ -1,24 +1,15 @@
 use std::ops::Add;
+use std::fmt;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct Sandpile {
     cols: i32,
     rows: i32,
     data: Vec<Vec<i32>>,
 }
-            
-impl Default for Sandpile {
-    fn default() -> Sandpile {
-        Sandpile {
-            cols: 3,
-            rows: 3,
-            data: vec![vec![0; 3]; 3]
-        }
-    } 
-}
 
 impl Sandpile {
-    fn new(cols: i32, rows: i32, data: Option<Vec<i32>>) -> Sandpile {
+    pub fn new(cols: i32, rows: i32, data: Option<Vec<i32>>) -> Sandpile {
         match data {
             None => {
                 let temp_data: Vec<Vec<i32>> = vec![vec![0; cols as usize]; rows as usize];
@@ -53,6 +44,16 @@ impl Sandpile {
                 }
             }
         }
+    }
+    
+    pub fn stabilize(mut self) -> Self {
+        let mut job_queue = self.get_job_queue();
+        
+        while !job_queue.is_empty() {
+            self = self.topple_pass(job_queue);
+            job_queue = self.get_job_queue();
+        }
+        self
     }
 
     fn is_add_compatible(&self, other: &Self) -> bool {
@@ -130,15 +131,6 @@ impl Sandpile {
         job_queue
     }
 
-    fn stabilize(mut self) -> Self {
-        let mut job_queue = self.get_job_queue();
-        
-        while !job_queue.is_empty() {
-            self = self.topple_pass(job_queue);
-            job_queue = self.get_job_queue();
-        }
-        self
-    }
 }
 
 impl Add for Sandpile {
@@ -158,6 +150,18 @@ impl Add for Sandpile {
         } else {
             panic!("The two sandpiles are not compatible for addition!");
         }
+    }
+}
+
+impl fmt::Display for Sandpile {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for i in 0..self.rows as usize {
+            for j in 0..self.cols as usize {
+                write!(f, "{} | ", self.data[i][j]).unwrap();
+            }
+            write!(f, "\n").unwrap();
+        }
+        write!(f, "")
     }
 }
 
@@ -220,4 +224,15 @@ mod tests {
         assert_eq!(a.stabilize(), b);
     }
 
+    #[test]
+    fn addition_test() {
+        let a = Sandpile::new(3, 3, Some(vec![2, 1, 2, 1, 0, 1, 2, 1, 2]));
+        let b = Sandpile::new(3, 3, Some(vec![2, 1, 2, 1, 0, 1, 2, 1, 2]));
+
+        let d = a.clone();
+
+        let c = a + b;
+
+        assert_eq!(c, d)
+    }
 }
