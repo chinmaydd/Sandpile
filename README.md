@@ -2,6 +2,8 @@
 
 Sandpile implementation in Rust. WIP.
 
+[![Build Status](https://travis-ci.org/chinmaydd/Sandpile.svg?branch=master)](https://travis-ci.org/chinmaydd/Sandpile)
+
 ### Usage Example
 
 ```rust
